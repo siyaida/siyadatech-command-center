@@ -1,0 +1,212 @@
+version: "3.8"
+
+# Siyadatech Ragaban Infrastructure
+# Full 4-layer stack for KSA healthcare transformation
+# Run: docker compose up -d
+
+services:
+  # ═══════════════════════════════════════
+  # Layer 4: Presentation
+  # ═══════════════════════════════════════
+  caddy:
+    image: caddy:2-alpine
+    container_name: ragaban-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./frontend/out:/srv/frontend:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - ragaban-net
+    depends_on:
+      - api
+      - superset
+      - openmrs
+
+  # ═══════════════════════════════════════
+  # Layer 3: Application
+  # ═══════════════════════════════════════
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ragaban-api
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://ragaban:${POSTGRES_PASSWORD}@postgres:5432/ragaban
+      - UNIFONIC_API_KEY=${UNIFONIC_API_KEY}
+      - NPHIES_CLIENT_ID=${NPHIES_CLIENT_ID}
+      - NPHIES_CLIENT_SECRET=${NPHIES_CLIENT_SECRET}
+      - GEIDEA_API_KEY=${GEIDEA_API_KEY}
+      - GEIDEA_MERCHANT_ID=${GEIDEA_MERCHANT_ID}
+      - STC_CLOUD_CREDENTIALS=${STC_CLOUD_CREDENTIALS}
+      - SDAIA_API_KEY=${SDAIA_API_KEY}
+      - TAWK_PROPERTY_ID=${TAWK_PROPERTY_ID}
+      - REDIS_URL=redis://redis:6379/0
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - ENVIRONMENT=production
+      - LOG_LEVEL=info
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app:ro
+      - api_logs:/app/logs
+    networks:
+      - ragaban-net
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ═══════════════════════════════════════
+  # Layer 2: Data
+  # ═══════════════════════════════════════
+  postgres:
+    image: postgres:16-alpine
+    container_name: ragaban-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=ragaban
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=ragaban
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/sql/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:5432:5432"
+    networks:
+      - ragaban-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: ragaban-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - ragaban-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: ragaban-kafka
+    restart: unless-stopped
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      CLUSTER_ID: ragaban-kafka-cluster-01
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - ragaban-net
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24-alpine
+    container_name: ragaban-clickhouse
+    restart: unless-stopped
+    environment:
+      - CLICKHOUSE_DB=ragaban_analytics
+      - CLICKHOUSE_USER=ragaban
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    networks:
+      - ragaban-net
+
+  openmrs:
+    image: openmrs/openmrs-reference-application-distro:2.13.0
+    container_name: ragaban-openmrs
+    restart: unless-stopped
+    environment:
+      - OMRS_CONFIG_AUTO_UPDATE_DATABASE=true
+      - OMRS_CONFIG_CONNECTION_SERVER=postgres
+      - OMRS_CONFIG_CONNECTION_DATABASE=openmrs
+      - OMRS_CONFIG_CONNECTION_USERNAME=openmrs
+      - OMRS_CONFIG_CONNECTION_PASSWORD=${OPENMRS_PASSWORD}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - openmrs_data:/openmrs/data
+    networks:
+      - ragaban-net
+    depends_on:
+      - postgres
+
+  superset:
+    build:
+      context: ./infra/superset
+      dockerfile: Dockerfile
+    container_name: ragaban-superset
+    restart: unless-stopped
+    environment:
+      - DATABASE_DB=superset
+      - DATABASE_HOST=postgres
+      - DATABASE_PASSWORD=${SUPERSET_PASSWORD}
+      - DATABASE_USER=superset
+      - DATABASE_PORT=5432
+      - DATABASE_DIALECT=postgresql
+      - PYTHONPATH=/app/pythonpath
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - FLASK_ENV=production
+      - SUPERSET_ENV=production
+      - SUPERSET_LOAD_EXAMPLES=no
+    volumes:
+      - superset_data:/app/superset_home
+    ports:
+      - "127.0.0.1:8088:8088"
+    networks:
+      - ragaban-net
+    depends_on:
+      - postgres
+      - redis
+
+  # ═══════════════════════════════════════
+  # Layer 1: Infrastructure (Security / Monitoring)
+  # ═══════════════════════════════════════
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: ragaban-uptime
+    restart: unless-stopped
+    volumes:
+      - uptime_data:/app/data
+    ports:
+      - "127.0.0.1:3001:3001"
+    networks:
+      - ragaban-net
+
+networks:
+  ragaban-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  kafka_data:
+  clickhouse_data:
+  openmrs_data:
+  superset_data:
+  caddy_data:
+  caddy_config:
+  api_logs:
+  uptime_data:
