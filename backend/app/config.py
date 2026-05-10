@@ -41,6 +41,11 @@ class Settings(BaseSettings):
     ODOO_USERNAME: str = "admin"
     ODOO_PASSWORD: str | None = None
     
+    # OpenMRS EHR
+    OPENMRS_URL: str | None = None
+    OPENMRS_USERNAME: str = "admin"
+    OPENMRS_PASSWORD: str | None = None
+    
     # Security
     SECRET_KEY: str = "change-me-in-production"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
