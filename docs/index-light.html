@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siyadatech — Ragaban Clinics AI Transformation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Medical Light Theme */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent: #0ea5e9;
+      --accent-light: #38bdf8;
+      --accent-glow: rgba(14, 165, 233, 0.08);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #6366f1;
+      --gradient-start: #0ea5e9;
+      --gradient-end: #6366f1;
+      --gradient-warm: #f59e0b;
+      --gradient-cool: #06b6d4;
+      --medical-green: #10b981;
+      --medical-teal: #14b8a6;
+      --soft-blue: #e0f2fe;
+      --soft-green: #d1fae5;
+      --soft-purple: #ede9fe;
+      --soft-amber: #fef3c7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* ===== Siyadatech Logo ===== */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+    .logo span { color: var(--accent); }
+
+    /* ===== Top Navigation ===== */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--soft-green);
+      color: var(--medical-green);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .status-badge::before {
+      content: "";
+      width: 6px; height: 6px;
+      background: var(--medical-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 80vh;
+      display: flex; align-items: center;
+      padding: 120px 24px 60px;
+      background: linear-gradient(180deg, var(--soft-blue) 0%, var(--bg-primary) 60%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; top: -50%; right: -20%;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; }
+    .hero-title {
+      font-size: 3.5rem; font-weight: 800; line-height: 1.1;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem; color: var(--text-secondary);
+      max-width: 500px; margin-bottom: 32px;
+    }
+    .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-badge {
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 500;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      color: white; font-weight: 600; font-size: 0.95rem;
+      border-radius: 12px; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4); }
+    .hero-visual {
+      position: relative;
+    }
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+    .hero-card-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .hero-card-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--medical-green);
+    }
+    .hero-card-title { font-weight: 600; font-size: 0.9rem; }
+    .hero-metric {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    .metric-box {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--accent);
+    }
+    .metric-label {
+      font-size: 0.75rem; color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ===== Section Styles ===== */
+    .section {
+      padding: 80px 24px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-title {
+      font-size: 2rem; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      color: var(--text-secondary); font-size: 1rem;
+      margin-bottom: 40px; max-width: 600px;
+    }
+
+    /* ===== Baseline Audit Table ===== */
+    .audit-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .audit-table th {
+      text-align: left; padding: 12px 16px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary); font-weight: 600;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+    .audit-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .audit-table tr:hover td { background: var(--bg-secondary); }
+    .status-pill {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 12px; font-size: 0.72rem; font-weight: 600;
+    }
+    .status-active { background: var(--soft-green); color: var(--medical-green); }
+    .status-partial { background: var(--soft-amber); color: #b45309; }
+    .status-missing { background: #fee2e2; color: #dc2626; }
+    .status-basic { background: var(--soft-blue); color: var(--accent); }
+
+    /* ===== Provider Cards ===== */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .provider-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .provider-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+    .provider-card::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .provider-card:hover::before { opacity: 1; }
+    .provider-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .provider-name { font-weight: 700; font-size: 1rem; }
+    .provider-tag {
+      font-size: 0.65rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-mandatory { background: var(--soft-green); color: var(--medical-green); }
+    .tag-ready { background: var(--soft-blue); color: var(--accent); }
+    .tag-apply { background: var(--soft-amber); color: #b45309; }
+    .tag-research { background: var(--soft-purple); color: #7c3aed; }
+    .provider-desc { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px; }
+    .provider-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    /* ===== Architecture Diagram ===== */
+    .arch-layer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .arch-layer-label {
+      position: absolute; top: -10px; left: 20px;
+      background: var(--bg-primary);
+      padding: 0 10px;
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--accent);
+    }
+    .arch-items {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .arch-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ===== API Key Panel ===== */
+    .api-panel {
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .api-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .api-card-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+    }
+    .api-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+    .api-icon-blue { background: var(--soft-blue); }
+    .api-icon-green { background: var(--soft-green); }
+    .api-icon-purple { background: var(--soft-purple); }
+    .api-icon-amber { background: var(--soft-amber); }
+    .api-card-title { font-weight: 600; font-size: 0.88rem; }
+    .api-card-desc { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .api-key-box {
+      background: var(--bg-secondary);
+      border: 1px dashed var(--border-hover);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+
+    /* ===== Roadmap ===== */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .roadmap { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .roadmap { grid-template-columns: 1fr; } }
+    .phase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .phase-card::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    }
+    .phase-num {
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .phase-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
+    .phase-time { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; }
+    .phase-deliverables { list-style: none; }
+    .phase-deliverables li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.82rem; color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .phase-deliverables li::before {
+      content: "—"; color: var(--accent); font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* ===== Sprint Board ===== */
+    .sprint-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .sprint-board { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .sprint-board { grid-template-columns: 1fr; } }
+    .sprint-col {
+      background: var(--bg-secondary);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 300px;
+    }
+    .sprint-col-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sprint-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .sprint-dot-backlog { background: var(--text-muted); }
+    .sprint-dot-progress { background: var(--warning); }
+    .sprint-dot-blocked { background: var(--danger); }
+    .sprint-dot-complete { background: var(--success); }
+    .sprint-col-title { font-weight: 700; font-size: 0.85rem; }
+    .sprint-col-count {
+      margin-left: auto;
+      font-size: 0.75rem; color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 2px 8px; border-radius: 10px;
+    }
+    .sprint-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: grab;
+      transition: all 0.15s;
+    }
+    .sprint-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .sprint-card-tag {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 6px;
+      margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .sprint-card-title { font-weight: 600; font-size: 0.82rem; margin-bottom: 6px; }
+    .sprint-card-meta { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ===== ROI Cards ===== */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .roi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .roi-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+    .roi-value {
+      font-size: 2.5rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .roi-label {
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .roi-desc {
+      font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 30px; }
+      .hero-title { font-size: 2.2rem; }
+      .nav-links { display: none; }
+      .sprint-board, .roadmap { grid-template-columns: 1fr; }
+      .top-nav { padding: 10px 16px; }
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeUp 0.6s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <a href="#" class="logo">
+    <div class="logo-icon">S</div>
+    SIYADA<span>TECH</span>
+  </a>
+  <div class="nav-links">
+    <a href="#vision">Vision</a>
+    <a href="#audit">Audit</a>
+    <a href="#providers">Ecosystem</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#sprints">Sprints</a>
+    <a href="#roi">ROI</a>
+  </div>
+  <div class="status-badge">System Active</div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-title">AI-Powered<br>Healthcare<br>Transformation</div>
+      <p class="hero-subtitle">
+        Siyadatech Command Center for Ragaban Clinics — Dr. Majed Aljudaibi.
+        KSA-native digital health infrastructure built for NPHIES, PDPL, and Vision 2030.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">🏥 4 Branches</span>
+        <span class="hero-badge">📍 Jeddah</span>
+        <span class="hero-badge">🤖 AI-Ready</span>
+        <span class="hero-badge">🇸🇦 KSA-Native</span>
+      </div>
+      <a href="#vision" class="hero-cta">Explore the System →</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-dot"></div>
+          <div class="hero-card-title">Ragaban Live Metrics</div>
+        </div>
+        <div class="hero-metric">
+          <div class="metric-box">
+            <div class="metric-value">4</div>
+            <div class="metric-label">Active Branches</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">~2K</div>
+            <div class="metric-label">Monthly Patients</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">4</div>
+            <div class="metric-label">Departments</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">0%</div>
+            <div class="metric-label">AI Adoption</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Vision -->
+<section class="section" id="vision">
+  <h2 class="section-title">Transformation Vision</h2>
+  <p class="section-subtitle">From traditional multi-location medical group to data-driven, AI-assisted healthcare platform.</p>
+  <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 32px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;">
+    <p style="margin-bottom: 16px;">
+      <strong style="color: var(--text-primary);">Target:</strong> 40% reduction in no-show rates via AI-powered reminders.
+      60% faster insurance claim processing via NPHIES automation.
+      3x increase in patient satisfaction through unified digital experience.
+    </p>
+    <p>
+      Every technology choice is born in Saudi context — not translated.
+      <strong style="color: var(--accent);">NPHIES FHIR</strong> integration for insurance claims,
+      <strong style="color: var(--accent);">SDAIA-certified AI</strong> for diagnostics,
+      <strong style="color: var(--accent);">STC Cloud</strong> for data sovereignty,
+      and <strong style="color: var(--accent);">Unifonic</strong> for patient communication.
+    </p>
+  </div>
+</section>
+
+<!-- Baseline Audit -->
+<section class="section" id="audit">
+  <h2 class="section-title">Baseline Audit</h2>
+  <p class="section-subtitle">Current system layer assessment — gaps, risks, and actions.</p>
+  <div style="overflow-x: auto;">
+    <table class="audit-table">
+      <thead>
+        <tr>
+          <th>System Layer</th>
+          <th>Current Tool</th>
+          <th>Status</th>
+          <th>Gap / Risk</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Communication</strong></td>
+          <td>Unifonic (SMS) + WhatsApp Business</td>
+          <td><span class="status-pill status-active">Active</span></td>
+          <td>No unified patient portal; manual appointment flows</td>
+          <td>Upgrade to Unifonic WhatsApp API + build patient app</td>
+        </tr>
+        <tr>
+          <td><strong>ERP / Operations</strong></td>
+          <td>Odoo (self-hosted)</td>
+          <td><span class="status-pill status-active">Active</span></td>
+          <td>No NPHIES integration; no AI-assisted scheduling</td>
+          <td>Extend Odoo with NPHIES FHIR module + AI scheduler</td>
+        </tr>
+        <tr>
+          <td><strong>Patient Records</strong></td>
+          <td>Manual / Paper-based in some branches</td>
+          <td><span class="status-pill status-partial">Partial</span></td>
+          <td>No unified EHR; compliance risk with PDPL</td>
+          <td>Deploy OpenMRS or Bahmni (open-source EHR)</td>
+        </tr>
+        <tr>
+          <td><strong>Insurance Claims</strong></td>
+          <td>Manual submission to CHI / insurers</td>
+          <td><span class="status-pill status-missing">Manual</span></td>
+          <td>4-6 week processing; high rejection rate</td>
+          <td>Integrate NPHIES FHIR $submit API</td>
+        </tr>
+        <tr>
+          <td><strong>Analytics</strong></td>
+          <td>Spreadsheets / Basic Odoo reports</td>
+          <td><span class="status-pill status-missing">Missing</span></td>
+          <td>No predictive analytics; no patient segmentation</td>
+          <td>Deploy Apache Superset + AI prediction models</td>
+        </tr>
+        <tr>
+          <td><strong>AI / Diagnostics</strong></td>
+          <td>None</td>
+          <td><span class="status-pill status-missing">Missing</span></td>
+          <td>Missed opportunity for early disease detection</td>
+          <td>Integrate SDAIA-certified AI for radiology + triage</td>
+        </tr>
+        <tr>
+          <td><strong>Payments</strong></td>
+          <td>Cash + POS terminal (mada)</td>
+          <td><span class="status-pill status-basic">Basic</span></td>
+          <td>No online payments; no appointment deposits</td>
+          <td>Integrate Geidea (mada/Visa/MC) + STC Pay</td>
+        </tr>
+        <tr>
+          <td><strong>Website</strong></td>
+          <td>Basic informational site</td>
+          <td><span class="status-pill status-basic">Static</span></td>
+          <td>No booking, no patient portal, no analytics</td>
+          <td>Rebuild as Next.js app with full integration</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- KSA Provider Ecosystem -->
+<section class="section" id="providers">
+  <h2 class="section-title">KSA Provider Ecosystem</h2>
+  <p class="section-subtitle">Every provider selected for KSA-native compliance. No Western defaults.</p>
+  <div class="provider-grid">
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">NPHIES (CHI)</div>
+        <span class="provider-tag tag-mandatory">Mandatory</span>
+      </div>
+      <div class="provider-desc">
+        The national health information backbone. FHIR R4 APIs for insurance eligibility, claims submission, and patient summaries.
+      </div>
+      <div class="provider-meta">
+        <span>CHI.gov.sa</span>
+        <span>FHIR R4</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">Unifonic</div>
+        <span class="provider-tag tag-ready">Ready</span>
+      </div>
+      <div class="provider-desc">
+        Saudi-born communication platform. SMS + WhatsApp Business API with KSA-specific routing. Already in use at Ragaban.
+      </div>
+      <div class="provider-meta">
+        <span>Saudi HQ</span>
+        <span>WhatsApp API</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">STC Cloud</div>
+        <span class="provider-tag tag-apply">Apply</span>
+      </div>
+      <div class="provider-desc">
+        Tier-1 Saudi cloud provider with data residency guarantees. Classified infrastructure for healthcare workloads. NCA-compliant.
+      </div>
+      <div class="provider-meta">
+        <span>Data Residency</span>
+        <span>NCA Compliant</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">SDAIA AI</div>
+        <span class="provider-tag tag-research">Research</span>
+      </div>
+      <div class="provider-desc">
+        National AI certification and model repository. Pre-approved AI models for medical imaging, NLP, and predictive analytics.
+      </div>
+      <div class="provider-meta">
+        <span>SDAIA Certified</span>
+        <span>Medical Imaging</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">Geidea</div>
+        <span class="provider-tag tag-apply">Apply</span>
+      </div>
+      <div class="provider-desc">
+        KSA payment gateway supporting mada, Visa, Mastercard, Apple Pay. Developer-friendly APIs with Arabic checkout. SAMA-licensed.
+      </div>
+      <div class="provider-meta">
+        <span>SAMA Licensed</span>
+        <span>mada Ready</span>
+      </div>
+    </div>
+    <div class="provider-card">
+      <div class="provider-header">
+        <div class="provider-name">Tawk.to</div>
+        <span class="provider-tag tag-ready">Ready</span>
+      </div>
+      <div class="provider-desc">
+        Live chat for patient support. Tawk.to is free and supports Arabic RTL. Intercom offers AI-powered chatbots.
+      </div>
+      <div class="provider-meta">
+        <span>Arabic RTL</span>
+        <span>Free Tier</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4-Layer Architecture -->
+<section class="section" id="architecture">
+  <h2 class="section-title">4-Layer Architecture</h2>
+  <p class="section-subtitle">KSA-native stack — from patient interface to national infrastructure.</p>
+  <div class="arch-layer">
+    <div class="arch-layer-label">Layer 4 — Presentation</div>
+    <div class="arch-items">
+      <div class="arch-item">🌐 Next.js Web App (Arabic RTL)</div>
+      <div class="arch-item">📱 React Native Patient App</div>
+      <div class="arch-item">💬 Tawk.to Live Chat</div>
+      <div class="arch-item">📊 Apache Superset Dashboard</div>
+    </div>
+  </div>
+  <div class="arch-layer">
+    <div class="arch-layer-label">Layer 3 — Application</div>
+    <div class="arch-items">
+      <div class="arch-item">🧠 FastAPI Python Backend</div>
+      <div class="arch-item">🤖 SDAIA AI Models (NLP + Imaging)</div>
+      <div class="arch-item">📅 AI Appointment Scheduler</div>
+      <div class="arch-item">🔔 Unifonic Notification Engine</div>
+    </div>
+  </div>
+  <div class="arch-layer">
+    <div class="arch-layer-label">Layer 2 — Data</div>
+    <div class="arch-items">
+      <div class="arch-item">📋 OpenMRS / Bahmni EHR</div>
+      <div class="arch-item">🗄️ PostgreSQL + PostGIS</div>
+      <div class="arch-item">🔍 Apache Kafka Event Stream</div>
+      <div class="arch-item">📈 ClickHouse Analytics DB</div>
+    </div>
+  </div>
+  <div class="arch-layer">
+    <div class="arch-layer-label">Layer 1 — Infrastructure</div>
+    <div class="arch-items">
+      <div class="arch-item">☁️ STC Cloud VMs</div>
+      <div class="arch-item">🐳 Docker + Kubernetes</div>
+      <div class="arch-item">🔒 NCA Cybersecurity Framework</div>
+      <div class="arch-item">🌐 NPHIES FHIR Gateway</div>
+    </div>
+  </div>
+</section>
+
+<!-- API Key Catalog -->
+<section class="section" id="api-keys">
+  <h2 class="section-title">API Key Catalog</h2>
+  <p class="section-subtitle">Every provider documented — signup URL, key name, and setup time.</p>
+  <div class="api-panel">
+    <div class="api-grid">
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-blue">📱</div>
+          <div class="api-card-title">Unifonic API</div>
+        </div>
+        <div class="api-card-desc">WhatsApp Business + SMS. Sign up at unifonic.com → Dashboard → API Keys</div>
+        <div class="api-key-box">UNIFONIC_API_KEY=your_key_here</div>
+      </div>
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-green">🏥</div>
+          <div class="api-card-title">NPHIES FHIR</div>
+        </div>
+        <div class="api-card-desc">CHI Nphies Portal → Register as Healthcare Provider → Get client_id + secret</div>
+        <div class="api-key-box">NPHIES_CLIENT_ID=your_id_here</div>
+      </div>
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-purple">💳</div>
+          <div class="api-card-title">Geidea Payment Gateway</div>
+        </div>
+        <div class="api-card-desc">geidea.net → Merchant Account → API Keys (mada/Visa/MC)</div>
+        <div class="api-key-box">GEIDEA_API_KEY=your_key_here</div>
+      </div>
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-blue">☁️</div>
+          <div class="api-card-title">STC Cloud</div>
+        </div>
+        <div class="api-card-desc">stc.com.sa/cloud → IAM → Create Service Account → Download credentials JSON</div>
+        <div class="api-key-box">STC_CLOUD_CREDENTIALS=/path/to/creds.json</div>
+      </div>
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-amber">💬</div>
+          <div class="api-card-title">Tawk.to</div>
+        </div>
+        <div class="api-card-desc">tawk.to → Property Settings → Get Property ID + Widget Key (FREE)</div>
+        <div class="api-key-box">TAWK_PROPERTY_ID=your_id_here</div>
+      </div>
+      <div class="api-card">
+        <div class="api-card-header">
+          <div class="api-icon api-icon-purple">🤖</div>
+          <div class="api-card-title">SDAIA AI Marketplace</div>
+        </div>
+        <div class="api-card-desc">sdai.gov.sa → Developer Portal → Request API access for healthcare models</div>
+        <div class="api-key-box">SDAIA_API_KEY=your_key_here</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16-Week Roadmap -->
+<section class="section" id="roadmap">
+  <h2 class="section-title">16-Week Roadmap</h2>
+  <p class="section-subtitle">Phased delivery from foundation to AI-powered scale.</p>
+  <div class="roadmap">
+    <div class="phase-card">
+      <div class="phase-num">Phase 1</div>
+      <div class="phase-title">Foundation & Data</div>
+      <div class="phase-time">Weeks 1-4</div>
+      <ul class="phase-deliverables">
+        <li>STC Cloud VMs + K8s cluster</li>
+        <li>OpenMRS EHR (Arabic locale)</li>
+        <li>Unifonic WhatsApp API live</li>
+        <li>Odoo ↔ OpenMRS sync</li>
+        <li>Patient booking via WhatsApp</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 2</div>
+      <div class="phase-title">AI & Automation</div>
+      <div class="phase-time">Weeks 5-8</div>
+      <ul class="phase-deliverables">
+        <li>NPHIES $eligibility + $submit APIs</li>
+        <li>AI no-show prediction (SDAIA)</li>
+        <li>Superset dashboard live</li>
+        <li>Geidea payment integration</li>
+        <li>60% faster claim processing</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 3</div>
+      <div class="phase-title">Patient Experience</div>
+      <div class="phase-time">Weeks 9-12</div>
+      <ul class="phase-deliverables">
+        <li>Next.js patient portal (RTL)</li>
+        <li>React Native iOS + Android app</li>
+        <li>AI triage chatbot</li>
+        <li>Tawk.to live chat (Arabic)</li>
+        <li>Unified digital experience</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 4</div>
+      <div class="phase-title">Advanced AI & Scale</div>
+      <div class="phase-time">Weeks 13-16</div>
+      <ul class="phase-deliverables">
+        <li>AI medical imaging (radiology)</li>
+        <li>Predictive inventory</li>
+        <li>AI marketing automation</li>
+        <li>Full NCA cybersecurity audit</li>
+        <li>AI-first healthcare platform</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Live Sprint Board -->
+<section class="section" id="sprints">
+  <h2 class="section-title">Live Sprint Board</h2>
+  <p class="section-subtitle">Drag tasks across columns. Last updated: May 10, 2026.</p>
+  <div class="sprint-board">
+    <div class="sprint-col">
+      <div class="sprint-col-header">
+        <div class="sprint-dot sprint-dot-backlog"></div>
+        <span class="sprint-col-title">⏳ Backlog</span>
+        <span class="sprint-col-count">3</span>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-blue); color: var(--accent);">API</span>
+        <div class="sprint-card-title">Apply for NPHIES Provider Registration</div>
+        <div class="sprint-card-meta">REGULATORY · CHI.gov.sa</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-blue); color: var(--accent);">API</span>
+        <div class="sprint-card-title">Sign Unifonic WhatsApp Business API contract</div>
+        <div class="sprint-card-meta">API · Upgrade from SMS</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-blue); color: var(--accent);">API</span>
+        <div class="sprint-card-title">STC Cloud account + IAM setup</div>
+        <div class="sprint-card-meta">INFRA · stc.com.sa/cloud</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-amber); color: #b45309;">API</span>
+        <div class="sprint-card-title">Geidea merchant account application</div>
+        <div class="sprint-card-meta">API · PAYMENTS · Trade license needed</div>
+      </div>
+    </div>
+    <div class="sprint-col">
+      <div class="sprint-col-header">
+        <div class="sprint-dot sprint-dot-progress"></div>
+        <span class="sprint-col-title">🔨 In Progress</span>
+        <span class="sprint-col-count">3</span>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">RESEARCH</span>
+        <div class="sprint-card-title">KSA provider research & API mapping</div>
+        <div class="sprint-card-meta">KSA · All 6 providers validated</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">UI</span>
+        <div class="sprint-card-title">Command Center website build</div>
+        <div class="sprint-card-meta">DEPLOY · siyadatech.siyada-cybersecurity.com</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">ARCH</span>
+        <div class="sprint-card-title">Architecture blueprint v1.0</div>
+        <div class="sprint-card-meta">4-layer stack documented</div>
+      </div>
+    </div>
+    <div class="sprint-col">
+      <div class="sprint-col-header">
+        <div class="sprint-dot sprint-dot-blocked"></div>
+        <span class="sprint-col-title">🚫 Blocked</span>
+        <span class="sprint-col-count">2</span>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: #fee2e2; color: #dc2626;">API</span>
+        <div class="sprint-card-title">NPHIES API testing</div>
+        <div class="sprint-card-meta">API · REGULATORY · Need provider registration first</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: #fee2e2; color: #dc2626;">AI</span>
+        <div class="sprint-card-title">SDAIA AI model integration</div>
+        <div class="sprint-card-meta">AI · API · Need developer portal access</div>
+      </div>
+    </div>
+    <div class="sprint-col">
+      <div class="sprint-col-header">
+        <div class="sprint-dot sprint-dot-complete"></div>
+        <span class="sprint-col-title">✅ Complete</span>
+        <span class="sprint-col-count">3</span>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">RESEARCH</span>
+        <div class="sprint-card-title">Document analysis (4 briefs read)</div>
+        <div class="sprint-card-meta">RESEARCH · Patient, booking, financial, KPI</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">AUDIT</span>
+        <div class="sprint-card-title">Baseline state assessment</div>
+        <div class="sprint-card-meta">8 system layers mapped</div>
+      </div>
+      <div class="sprint-card">
+        <span class="sprint-card-tag" style="background: var(--soft-green); color: var(--medical-green);">RESEARCH</span>
+        <div class="sprint-card-title">KSA ecosystem provider research</div>
+        <div class="sprint-card-meta">All providers validated with real URLs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI Projections -->
+<section class="section" id="roi">
+  <h2 class="section-title">ROI Projections</h2>
+  <p class="section-subtitle">Measurable outcomes, Year 1 post-deployment.</p>
+  <div class="roi-grid">
+    <div class="roi-card">
+      <div class="roi-value">-40%</div>
+      <div class="roi-label">No-Show Rate Reduction</div>
+      <div class="roi-desc">AI reminders + deposit system</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-value">+60%</div>
+      <div class="roi-label">Claim Processing Speed</div>
+      <div class="roi-desc">NPHIES FHIR automation</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-value">3x</div>
+      <div class="roi-label">Patient Satisfaction</div>
+      <div class="roi-desc">Unified digital experience</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-value">+25%</div>
+      <div class="roi-label">Revenue Growth (Year 1)</div>
+      <div class="roi-desc">Online bookings + retention</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-value">SAR 180K</div>
+      <div class="roi-label">Annual Savings (Admin)</div>
+      <div class="roi-desc">Automation + AI scheduling</div>
+    </div>
+    <div class="roi-card">
+      <div class="roi-value">16 wks</div>
+      <div class="roi-label">Time to Full Deployment</div>
+      <div class="roi-desc">Phased, low-risk delivery</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>
+    <strong>SIYADA<span style="color: var(--accent);">TECH</span></strong> — Siyadatech Command Center for Ragaban Clinics<br>
+    Dr. Majed Aljudaibi, CEO · Jeddah, Kingdom of Saudi Arabia<br>
+    Built for NPHIES · PDPL · Vision 2030 · <a href="https://github.com/siyaida/siyadatech-command-center">Open Source on GitHub</a>
+  </p>
+  <p style="margin-top: 12px; font-size: 0.7rem;">
+    Data sources: Black Book Market Research 2026, TechSci Research, Vision2030.gov.sa, CHI.gov.sa, NPHIES.seha.sa, SDAIA.gov.sa
+  </p>
+</footer>
+
+</body>
+</html>
